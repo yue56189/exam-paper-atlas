@@ -1,0 +1,14 @@
+# 原始扫描件（版权归原出题单位，且体积大）
+pdfs/
+*.pdf
+
+# 构建/校验临时产物
+_verify.js
+*.tmp
+
+# 系统
+.DS_Store
+Thumbs.db
+
+# 工作区记忆与本地状态，不上传
+.workbuddy/

@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{TITLE}}</title>
+<style>
+:root{
+  --bg:#f1eee7; --card:#fffdf9; --ink:#1b1e23; --ink2:#3d444d; --muted:#7a8089;
+  --line:#e2dbcd; --line2:#efe9dd;
+  --red:#a8322a; --redbg:#fbeeec;
+  --blue:#1d4c66; --bluebg:#eef4f7;
+  --gold:#9a6b1a; --goldbg:#fdf6e6;
+  --green:#2c6149; --greenbg:#eef6f1;
+  --shadow:0 1px 2px rgba(27,30,35,.05),0 8px 24px -12px rgba(27,30,35,.18);
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;background:var(--bg);color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei","Hiragino Sans GB",sans-serif;
+  font-size:15px;line-height:1.72;
+  background-image:radial-gradient(circle at 12% -10%,#fffdf6 0%,transparent 55%),radial-gradient(circle at 100% 0%,#eef2f4 0%,transparent 40%);
+  background-attachment:fixed;
+}
+.wrap{max-width:960px;margin:0 auto;padding:0 18px 90px}
+
+/* ---------- hero ---------- */
+.hero{padding:38px 0 20px}
+.hero h1{
+  margin:0 0 6px;font-size:30px;letter-spacing:-.4px;font-weight:700;line-height:1.25;
+  font-family:Georgia,"Times New Roman","Songti SC",serif;
+}
+.hero .sub{color:var(--muted);font-size:13.5px;letter-spacing:.02em}
+.hero .rule{height:3px;width:64px;background:var(--red);margin:16px 0 0;border-radius:2px}
+.hero .note{
+  margin-top:16px;font-size:13px;color:var(--ink2);background:var(--card);
+  border:1px solid var(--line);border-left:3px solid var(--gold);
+  padding:10px 14px;border-radius:0 8px 8px 0;
+}
+.hero .note b{color:var(--red)}
+.hero .note ul{margin:6px 0 0;padding-left:18px}
+.hero .note li{margin:2px 0}
+
+/* ---------- tabs ---------- */
+.tabbar{
+  position:sticky;top:0;z-index:30;margin:22px -18px 0;padding:10px 18px;
+  background:rgba(241,238,231,.9);backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+  display:flex;gap:8px;flex-wrap:wrap;align-items:center;
+}
+.tab{
+  border:1px solid var(--line);background:var(--card);color:var(--ink2);
+  padding:7px 14px;border-radius:999px;cursor:pointer;font-size:13px;font-weight:600;
+  transition:.16s;letter-spacing:.01em;white-space:nowrap;
+}
+.tab:hover{border-color:#cbc2b0;transform:translateY(-1px)}
+.tab.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.tab .k{opacity:.6;font-weight:500;margin-right:4px}
+.spacer{flex:1}
+.mini{
+  border:1px solid var(--line);background:transparent;color:var(--muted);
+  padding:6px 11px;border-radius:7px;cursor:pointer;font-size:12.5px;font-weight:600;transition:.15s;
+}
+.mini:hover{color:var(--ink);border-color:#cbc2b0;background:#fff}
+
+/* ---------- paper head ---------- */
+.paper{display:none;animation:fade .3s ease}
+.paper.on{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+.phead{margin:26px 0 10px;padding:20px 22px;background:var(--card);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow)}
+.phead h2{margin:0 0 4px;font-size:20px;font-family:Georgia,"Songti SC",serif;letter-spacing:-.2px}
+.phead .meta{color:var(--muted);font-size:12.5px;display:flex;gap:14px;flex-wrap:wrap;margin-top:6px}
+.bar{height:5px;background:var(--line2);border-radius:3px;overflow:hidden;margin-top:14px}
+.bar>i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--red),#d4703f);transition:width .35s ease}
+.pstat{font-size:12px;color:var(--muted);margin-top:7px;display:flex;justify-content:space-between}
+
+/* ---------- section ---------- */
+.sec{margin:26px 0 12px;display:flex;align-items:baseline;gap:10px;border-bottom:2px solid var(--ink);padding-bottom:6px}
+.sec h3{margin:0;font-size:16.5px;font-weight:700;letter-spacing:.01em}
+.sec .sc{font-size:12px;color:var(--muted);margin-left:auto;font-variant-numeric:tabular-nums}
+.sec .num{font-family:Georgia,serif;color:var(--red);font-size:17px}
+
+/* ---------- question ---------- */
+.q{background:var(--card);border:1px solid var(--line);border-radius:11px;margin:0 0 11px;overflow:hidden;transition:box-shadow .18s,border-color .18s}
+.q:hover{box-shadow:var(--shadow);border-color:#d8cfbe}
+.q.done{border-left:3px solid var(--green)}
+.qh{display:flex;gap:12px;padding:14px 16px;cursor:pointer;align-items:flex-start;user-select:none}
+.qn{
+  flex:0 0 auto;min-width:26px;height:26px;padding:0 7px;border-radius:7px;background:#f0ece2;color:var(--ink2);
+  font-size:12.5px;font-weight:700;display:flex;align-items:center;justify-content:center;
+  font-variant-numeric:tabular-nums;margin-top:1px;
+}
+.q.open .qn{background:var(--ink);color:#fff}
+.qt{flex:1;font-size:14.6px;line-height:1.75;color:var(--ink)}
+.qt .st{color:var(--muted);font-size:12px;margin-left:6px;font-weight:500}
+.chev{flex:0 0 auto;color:#b9b0a0;font-size:11px;transition:transform .2s;margin-top:6px}
+.q.open .chev{transform:rotate(180deg)}
+
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:2px 18px;margin:8px 0 2px;font-size:14px;color:var(--ink2)}
+.opts span{padding-left:2px}
+@media(max-width:620px){.opts{grid-template-columns:1fr}}
+
+.qb{display:none;padding:0 16px 16px 16px}
+.q.open .qb{display:block;animation:slide .22s ease}
+@keyframes slide{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+
+.arow{display:flex;gap:12px;background:var(--redbg);border:1px solid #f0d9d5;border-radius:9px;padding:10px 13px;margin:2px 0 12px}
+.alab{flex:0 0 auto;font-size:11.5px;font-weight:700;color:var(--red);letter-spacing:.12em;padding-top:2px}
+.av{flex:1;font-size:15px;color:#6e1f19;font-weight:600;line-height:1.7}
+.av .u{font-weight:500;font-size:13px;color:#8d4a43}
+
+.sol{font-size:14.2px;color:var(--ink2);line-height:1.82}
+.sol p{margin:0 0 9px}
+.sol .h{font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.14em;margin:14px 0 7px;text-transform:uppercase}
+.sol .h:first-child{margin-top:0}
+.sol ol,.sol ul{margin:0 0 10px;padding-left:20px}
+.sol li{margin:3px 0}
+.key{background:var(--goldbg);border-left:3px solid var(--gold);padding:9px 13px;border-radius:0 7px 7px 0;margin:10px 0;font-size:13.8px}
+.key b{color:var(--gold)}
+.warn{background:#f5f0f7;border-left:3px solid #7a5a92;padding:9px 13px;border-radius:0 7px 7px 0;margin:10px 0;font-size:13.6px;color:#4a3a58}
+.warn b{color:#6b4a86}
+.note{font-size:12.6px;color:var(--muted);margin:8px 0 0;padding-left:2px}
+
+/* table */
+.tb{width:100%;border-collapse:collapse;font-size:13.3px;margin:10px 0;background:#fff;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.tb th{background:#f4f0e6;color:var(--ink2);font-weight:700;font-size:12.3px;text-align:left;padding:7px 10px;border-bottom:1px solid var(--line);white-space:nowrap}
+.tb td{padding:7px 10px;border-bottom:1px solid var(--line2);vertical-align:top;color:var(--ink2);line-height:1.6}
+.tb tr:last-child td{border-bottom:none}
+.tb td.k{font-weight:600;color:var(--ink)}
+.tb td i{font-family:Cambria,Georgia,serif;font-style:italic}
+
+/* math */
+.fx{
+  font-family:Cambria,Georgia,"Times New Roman",serif;font-size:16.5px;color:var(--ink);
+  background:#faf7f1;border:1px solid var(--line2);border-radius:8px;
+  padding:11px 14px;margin:9px 0;text-align:center;line-height:2;
+  overflow-x:auto;overflow-y:hidden;
+}
+.fx.l{text-align:left}
+.fx em,.mi{font-family:Cambria,Georgia,serif;font-style:italic;font-size:1.04em;letter-spacing:.01em}
+.fx i,.sol i,.av i{font-family:Cambria,Georgia,"Times New Roman",serif;font-style:italic;font-size:1.04em}
+.fr{display:inline-flex;flex-direction:column;vertical-align:-0.55em;text-align:center;margin:0 .18em;line-height:1.25;font-size:.94em}
+.fr>.nu{border-bottom:1.2px solid currentColor;padding:0 .28em .06em}
+.fr>.de{padding:.06em .28em 0}
+sub,sup{font-size:.7em;line-height:0}
+.sq{border-top:1.2px solid currentColor;padding:0 .16em}
+.tx{font-family:inherit;font-style:normal;font-size:.94em}
+
+/* svg holder */
+.dg{background:#fcfaf5;border:1px solid var(--line2);border-radius:10px;padding:10px 6px 4px;margin:10px 0;text-align:center;overflow-x:auto}
+.dg svg{max-width:100%;height:auto}
+.dg .cap{font-size:11.5px;color:var(--muted);padding:2px 0 6px}
+
+/* done btn */
+.tools{display:flex;gap:8px;margin-top:12px;padding-top:10px;border-top:1px dashed var(--line)}
+.dbtn{
+  border:1px solid var(--line);background:#fff;color:var(--muted);border-radius:7px;
+  padding:5px 11px;font-size:12px;cursor:pointer;font-weight:600;transition:.15s;
+}
+.dbtn:hover{border-color:var(--green);color:var(--green)}
+.dbtn.on{background:var(--greenbg);border-color:#b7d6c5;color:var(--green)}
+
+footer{margin-top:50px;padding-top:18px;border-top:1px solid var(--line);color:var(--muted);font-size:12.3px;line-height:1.9}
+footer b{color:var(--ink2)}
+
+@media print{
+  body{background:#fff}
+  .tabbar,.mini,.tools,.chev{display:none!important}
+  .paper{display:block!important}
+  .qb{display:block!important}
+  .q{break-inside:avoid;box-shadow:none}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hero">
+    <h1>{{TITLE}}</h1>
+    <div class="sub">{{SUB}}</div>
+    <div class="rule"></div>
+    <div class="note">
+      <b>使用方法</b>：点击任意题目展开答案与解析；「已掌握」勾选后进度条会更新（本地保存）。
+      <ul>
+        <li>计算题均以题给数据代入，保留 3 位有效数字，并做<b>交叉验算</b>（两种算法互检）。</li>
+        <li>带 ⚠ 标记的是易错点或题意可作两种理解的地方，已注明依据。</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="tabbar" id="tabbar"></div>
+  <div id="papers"></div>
+
+  <footer>
+    {{FOOTER}}
+  </footer>
+</div>
+
+<script>
+/* ============ 迷你公式渲染：\frac{}{} \sqrt{} ^{} _{} 及希腊字母 ============ */
+const SYM={
+ '\\Delta':'Δ','\\delta':'δ','\\eta':'η','\\lambda':'λ','\\rho':'ρ','\\varepsilon':'ε','\\epsilon':'ε',
+ '\\alpha':'α','\\beta':'β','\\gamma':'γ','\\theta':'θ','\\mu':'μ','\\nu':'ν','\\pi':'π','\\sigma':'σ',
+ '\\omega':'ω','\\tau':'τ','\\phi':'φ','\\infty':'∞','\\to':'→','\\approx':'≈','\\le':'≤','\\ge':'≥',
+ '\\times':'×','\\cdot':'·','\\pm':'±','\\circ':'°','\\sum':'Σ','\\int':'∫','\\oint':'∮','\\partial':'∂',
+ '\\qquad':'&nbsp;&nbsp;&nbsp;&nbsp;','\\quad':'&nbsp;&nbsp;','\\Pi':'Π','\\Omega':'Ω','\\Gamma':'Γ',
+ '\\Phi':'Φ','\\Theta':'Θ','\\Lambda':'Λ','\\Sigma':'Σ','\\mid':'∣','\\leftrightarrow':'↔',
+ '\\Rightarrow':'⇒','\\quad':'&nbsp;&nbsp;&nbsp;','\\,':'&thinsp;','\\;':'&thinsp;','\\!':'',
+ '\\prime':'′','\\ldots':'…','\\cdots':'⋯','\\neq':'≠','\\equiv':'≡','\\propto':'∝','\\%':'%'
+};
+const FUN=['ln','lg','exp','const','max','min','rev','iso','net','ir','tot','out','in','th','t','s','g','f','w','c'];
+function readGroup(s,k){
+  if(s[k]!=='{') return [s[k]||'',k+1];
+  let d=0;
+  for(let i=k;i<s.length;i++){
+    if(s[i]==='{')d++;
+    else if(s[i]==='}'){d--;if(d===0)return [s.slice(k+1,i),i+1];}
+  }
+  return [s.slice(k+1),s.length];
+}
+const ROMAN=new Set(['ln','lg','exp','const','max','min','sin','cos','tan','d','rev','iso','net','ir']);
+function mx(s){
+  let out='',i=0,buf='';
+  const flush=()=>{
+    if(!buf)return;
+    if(ROMAN.has(buf)) out+='<span class="tx">'+buf+'</span>';
+    else out+='<i>'+buf+'</i>';
+    buf='';
+  };
+  while(i<s.length){
+    const ch=s[i];
+    if(ch==='\\'){
+      let j=i+1;
+      while(j<s.length&&/[a-zA-Z]/.test(s[j]))j++;
+      const cmd=s.slice(i,j);
+      if(cmd==='\\'){ flush(); out+='&thinsp;'; i=j+1; continue; }
+      if(cmd==='\\left'||cmd==='\\right'){ flush(); i=j; if(s[i]==='.')i++ ; continue; }
+      if(cmd==='\\frac'){flush();const[a,k1]=readGroup(s,j);const[b,k2]=readGroup(s,k1);
+        out+='<span class="fr"><span class="nu">'+mx(a)+'</span><span class="de">'+mx(b)+'</span></span>';i=k2;continue;}
+      if(cmd==='\\sqrt'){flush();const[a,k1]=readGroup(s,j);out+='<span class="sq">'+mx(a)+'</span>';i=k1;continue;}
+      if(cmd==='\\text'||cmd==='\\mathrm'){flush();const[a,k1]=readGroup(s,j);out+='<span class="tx">'+a+'</span>';i=k1;continue;}
+      if(cmd==='\\bar'){flush();const[a,k1]=readGroup(s,j);out+='<span style="text-decoration:overline">'+mx(a)+'</span>';i=k1;continue;}
+      if(SYM[cmd]!==undefined){flush();out+=SYM[cmd];i=j;continue;}
+      flush();out+=s.slice(i,j);i=j;continue;
+    }
+    if(ch==='^'||ch==='_'){
+      flush();
+      const tag=ch==='^'?'sup':'sub';
+      let val,k;
+      if(s[i+1]==='{'){[val,k]=readGroup(s,i+1);}else{val=s[i+1]||'';k=i+2;}
+      out+='<'+tag+'>'+mx(val)+'</'+tag+'>';i=k;continue;
+    }
+    if(ch==='{'){flush();const[a,k]=readGroup(s,i);out+=mx(a);i=k;continue;}
+    if(/[a-zA-Z]/.test(ch)){buf+=ch;i++;continue;}
+    flush();out+=ch;i++;
+  }
+  flush();
+  return out;
+}
+const F=(s)=>'<div class="fx">'+mx(s)+'</div>';
+const FL=(s)=>'<div class="fx l">'+mx(s)+'</div>';
+/* ============ 全局容器（模板自带，数据文件不要再声明） ============ */
+const DIAG = {};   /* 图库：数据文件里写 DIAG.xxx = `<svg ...>` */
+
+/* ============ 绘图图元常量 ============ */
+const AXV = '<defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#1b1e23"/></marker></defs>';
+const st  = 'fill="none" stroke="#1b1e23" stroke-width="1.7" stroke-linecap="round"';
+const stl = 'fill="none" stroke="#a8322a" stroke-width="1.7" stroke-linecap="round"';
+const std = 'fill="none" stroke="#8c8578" stroke-width="1.2" stroke-dasharray="4 4"';
+const ax  = 'fill="none" stroke="#1b1e23" stroke-width="1.4" marker-end="url(#ar)"';
+const lb  = 'font-family="Cambria,Georgia,serif" font-style="italic" font-size="13" fill="#1b1e23"';
+const lr  = 'font-family="Segoe UI,Microsoft YaHei" font-size="11" fill="#7a8089"';
+
+/* ============ 数据块专用辅助（DIAG 在数据块里定义，这里延迟引用） ============ */
+const R    = String.raw;
+const fx   = (s) => '<div class="fx">' + mx(s) + '</div>';
+const fxl  = (s) => '<div class="fx l">' + mx(s) + '</div>';
+const dg   = (k, c) => '<div class="dg">' + (typeof DIAG !== 'undefined' && DIAG[k] ? DIAG[k] : '') + (c ? '<div class="cap">' + c + '</div>' : '') + '</div>';
+const TBL  = (head, rows) => '<table class="tb"><thead><tr>' + head.map(h => '<th>' + h + '</th>').join('') + '</tr></thead><tbody>' +
+  rows.map(r => '<tr>' + r.map((c, i) => '<td' + (i === 0 ? ' class="k"' : '') + '>' + c + '</td>').join('') + '</tr>').join('') + '</tbody></table>';
+</script>
+<script>
+const PAPERS=[];
+/*BEGIN_DATA*/
+/*END_DATA*/
+</script>
+<script>
+/* ============ 渲染引擎 ============ */
+const state=JSON.parse(localStorage.getItem('thermo_done')||'{}');
+function saveState(){localStorage.setItem('thermo_done',JSON.stringify(state));}
+
+let cur=null;
+function renderTabs(){
+  const tb=document.getElementById('tabbar');
+  tb.innerHTML=PAPERS.map((p,i)=>
+    `<button class="tab${i===0?' on':''}" data-i="${i}"><span class="k">${p.k}</span>${p.short}</button>`
+  ).join('')+
+  `<div class="spacer"></div>
+   <button class="mini" id="exAll">展开本卷</button>
+   <button class="mini" id="clAll">收起</button>`;
+  tb.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{
+    tb.querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));
+    b.classList.add('on');show(+b.dataset.i);
+  });
+  document.getElementById('exAll').onclick=()=>document.querySelectorAll('.paper.on .q').forEach(q=>q.classList.add('open'));
+  document.getElementById('clAll').onclick=()=>document.querySelectorAll('.paper.on .q').forEach(q=>q.classList.remove('open'));
+}
+function show(i){
+  cur=i;
+  document.querySelectorAll('.paper').forEach((p,k)=>p.classList.toggle('on',k===i));
+  updateStats();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function card(p,sec,item,idx){
+  const id=p.id+'-'+sec.idx+'-'+idx;
+  const done=!!state[id];
+  const opt=item.o?`<div class="opts">${item.o.map(x=>'<span>'+x+'</span>').join('')}</div>`:'';
+  const st=item.s?`<span class="st">${item.s}</span>`:'';
+  return `<article class="q${done?' done':''}" data-id="${id}" data-p="${p.id}">
+    <header class="qh">
+      <span class="qn">${item.n}</span>
+      <div class="qt">${item.q}${opt}${st}</div>
+      <span class="chev">▼</span>
+    </header>
+    <div class="qb">
+      <div class="arow"><span class="alab">答案</span><div class="av">${item.a}</div></div>
+      <div class="sol">${item.sol}</div>
+      <div class="tools"><button class="dbtn${done?' on':''}">${done?'✓ 已掌握':'标记为已掌握'}</button></div>
+    </div>
+  </article>`;
+}
+function render(){
+  const box=document.getElementById('papers');
+  box.innerHTML=PAPERS.map(p=>`
+    <section class="paper" data-p="${p.id}">
+      <div class="phead">
+        <h2>${p.title}</h2>
+        <div class="meta"><span>${p.meta}</span><span>${p.code}</span></div>
+        <div class="bar"><i></i></div>
+        <div class="pstat"><span class="done-n">0 / ${p.total} ${p.unit||'题已掌握'}</span><span>${p.score}</span></div>
+      </div>
+      ${p.sections.map(s=>`
+        <div class="sec"><span class="num">${s.roman}</span><h3>${s.title}</h3><span class="sc">${s.score}</span></div>
+        ${s.items.map((it,i)=>card(p,s,it,i+1)).join('')}
+      `).join('')}
+    </section>`).join('');
+
+  box.querySelectorAll('.qh').forEach(h=>h.onclick=()=>{
+    const q=h.parentElement;q.classList.toggle('open');
+  });
+  box.querySelectorAll('.dbtn').forEach(b=>b.onclick=(e)=>{
+    e.stopPropagation();
+    const q=b.closest('.q'),id=q.dataset.id;
+    if(state[id]){delete state[id];q.classList.remove('done');b.classList.remove('on');b.textContent='标记为已掌握';}
+    else{state[id]=1;q.classList.add('done');b.classList.add('on');b.textContent='✓ 已掌握';}
+    saveState();updateStats();
+  });
+  updateStats();
+}
+function updateStats(){
+  document.querySelectorAll('.paper').forEach(p=>{
+    const qs=p.querySelectorAll('.q'),dn=p.querySelectorAll('.q.done').length;
+    const n=p.querySelectorAll('.done-n')[0];
+    const unit=(PAPERS.find(x=>x.id===p.dataset.p)||{}).unit||'题已掌握';
+    if(n)n.textContent=dn+' / '+qs.length+' '+unit;
+    const b=p.querySelector('.bar>i');
+    if(b)b.style.width=(qs.length?dn/qs.length*100:0)+'%';
+  });
+}
+renderTabs();render();
+document.querySelectorAll('.paper')[0].classList.add('on');
+</script>
+</body>
+</html>
